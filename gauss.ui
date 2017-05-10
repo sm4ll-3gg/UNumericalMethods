@@ -50,7 +50,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>556</width>
+          <width>538</width>
           <height>388</height>
          </rect>
         </property>
@@ -215,6 +215,26 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Ответ:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit">
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

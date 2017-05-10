@@ -1,6 +1,7 @@
 #include "gauss.h"
 #include "ui_gauss.h"
 
+#include <math.h>
 #include <QVariant>
 
 Gauss::Gauss(QWidget *parent) :
@@ -52,4 +53,57 @@ QVector<double> Gauss::getColumn()
     }
 
     return column;
+}
+
+double Gauss::determinant()
+{
+    if(matrix.isEmpty())
+        return 0;
+
+    return calculateDet(matrix);
+}
+
+double Gauss::calculateDet(const Matrix& matrix)
+{
+    if(matrix.size() == 2)
+        return matrix[0][0]*matrix[1][1] - matrix[0][1]*matrix[1][0];
+
+    double result = 0;
+    for(int i = 0; i < matrix.size(); ++i)
+    {
+        if(matrix[0][i] != 0)
+        {
+            result += pow(-1, i+2) * matrix[0][i] * calculateDet( getSubmatrix(matrix, i) );
+        }
+    }
+
+    return result;
+}
+
+Gauss::Matrix Gauss::getSubmatrix(const Gauss::Matrix &matrix, int index)
+{
+    int size = matrix.size();
+    Matrix m(size - 1, QVector<double>(size - 1));
+
+    for(int i = 1; i < size; ++i)
+    {
+        for(int j = 0; j < size; ++j)
+        {
+            if(j != index)
+            {
+                m[i][j] = matrix[i][j];
+            }
+        }
+    }
+
+    return m;
+}
+
+
+void Gauss::on_matrixSizeSpin_valueChanged(int count)
+{
+    ui->conditionTableWidget->setRowCount(count);
+    ui->conditionTableWidget->setColumnCount(count);
+
+    ui->conditionColumnWidget->setRowCount(count);
 }

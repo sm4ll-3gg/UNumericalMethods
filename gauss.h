@@ -16,11 +16,18 @@ public:
     explicit Gauss(QWidget *parent = 0);
     ~Gauss();
 
+private slots:
+    void on_matrixSizeSpin_valueChanged(int count);
+
 private: // Methods
     typedef QVector<QVector<double>> Matrix;
 
     Matrix          getMatrix();
     QVector<double> getColumn();
+
+    double          determinant();
+    double          calculateDet(const Matrix &matrix);
+    Matrix          getSubmatrix(const Matrix &matrix, int index);
 
 private:
     Ui::Gauss *ui;
