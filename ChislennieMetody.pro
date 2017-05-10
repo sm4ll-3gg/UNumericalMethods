@@ -27,6 +27,8 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     gauss.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    gauss.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    gauss.ui

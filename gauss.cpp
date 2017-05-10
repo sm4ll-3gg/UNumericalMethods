@@ -1,9 +1,21 @@
-#include <mainwindow.h>
-#include <ui_mainwindow.h>
+#include "gauss.h"
+#include "ui_gauss.h"
 
 #include <QVariant>
 
-QVector<QVector<double>> MainWindow::getMatrix()
+Gauss::Gauss(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::Gauss)
+{
+    ui->setupUi(this);
+}
+
+Gauss::~Gauss()
+{
+    delete ui;
+}
+
+QVector<QVector<double>> Gauss::getMatrix()
 {
     QTableWidget* m = ui->conditionTableWidget;
     int size = m->rowCount();
@@ -23,7 +35,7 @@ QVector<QVector<double>> MainWindow::getMatrix()
     return matrix;
 }
 
-QVector<double> MainWindow::getColumn()
+QVector<double> Gauss::getColumn()
 {
     QTableWidget* m = ui->conditionColumnWidget;
     int size = m->rowCount();
