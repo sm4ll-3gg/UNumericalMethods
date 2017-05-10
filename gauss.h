@@ -19,6 +19,8 @@ public:
 private slots:
     void on_matrixSizeSpin_valueChanged(int count);
 
+    void on_calculateButton_clicked();
+
 private: // Methods
     typedef QVector<QVector<double>> Matrix;
 

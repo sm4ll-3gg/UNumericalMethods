@@ -217,14 +217,14 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="answerLabel">
          <property name="text">
           <string>Ответ:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit">
+        <widget class="QLineEdit" name="answerField">
          <property name="maximumSize">
           <size>
            <width>300</width>

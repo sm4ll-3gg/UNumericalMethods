@@ -87,12 +87,13 @@ Gauss::Matrix Gauss::getSubmatrix(const Gauss::Matrix &matrix, int index)
 
     for(int i = 1; i < size; ++i)
     {
-        for(int j = 0; j < size; ++j)
+        for(int j = 0, t = 0; j < size; ++j, ++t)
         {
             if(j != index)
             {
-                m[i][j] = matrix[i][j];
+                m[i - 1][t] = matrix[i][j];
             }
+            else t--;
         }
     }
 
@@ -106,4 +107,11 @@ void Gauss::on_matrixSizeSpin_valueChanged(int count)
     ui->conditionTableWidget->setColumnCount(count);
 
     ui->conditionColumnWidget->setRowCount(count);
+}
+
+void Gauss::on_calculateButton_clicked()
+{
+    matrix = getMatrix();
+
+    ui->answerField->setText( QString::number(determinant()) );
 }
