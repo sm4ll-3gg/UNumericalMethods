@@ -27,15 +27,31 @@ private: // Methods
     Matrix          getMatrix();
     QVector<double> getColumn();
 
-    double          determinant();
-    double          calculateDet(const Matrix &matrix);
-    Matrix          getSubmatrix(const Matrix &matrix, int index);
+    Matrix          addColumnToMatrix();
+
+    int             getMainColumn();
+    // Меняет местами первую строку, со строкой с
+    // ненулевым первым элементом
+    void            setMainRow();
+    void            divideCurrRowOnConst(const int k);
+    void            subtractCurrRowFromRest();
+    void            makeUpperTriangularMatrix();
+
+    void            subtractRowFromRest(int row);
+    void            makeEMatrixFromUT();
+    void            step();
+
+    void            reset();
 
 private:
     Ui::Gauss *ui;
 
     Matrix          matrix;
-    QVector<double> column;
+
+    int             rowCount;
+
+    int             currColumnIndex;
+    int             currRowIndex;
 };
 
 #endif // GAUSS_H

@@ -50,7 +50,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>538</width>
+          <width>344</width>
           <height>388</height>
          </rect>
         </property>
@@ -69,10 +69,10 @@
               <enum>QAbstractItemView::NoSelection</enum>
              </property>
              <property name="rowCount">
-              <number>2</number>
+              <number>3</number>
              </property>
              <property name="columnCount">
-              <number>2</number>
+              <number>3</number>
              </property>
              <attribute name="horizontalHeaderVisible">
               <bool>false</bool>
@@ -100,12 +100,71 @@
              </attribute>
              <row/>
              <row/>
+             <row/>
              <column/>
              <column/>
+             <column/>
+             <item row="0" column="0">
+              <property name="text">
+               <string>1</string>
+              </property>
+             </item>
+             <item row="0" column="1">
+              <property name="text">
+               <string>1</string>
+              </property>
+             </item>
+             <item row="0" column="2">
+              <property name="text">
+               <string>1</string>
+              </property>
+             </item>
+             <item row="1" column="0">
+              <property name="text">
+               <string>4</string>
+              </property>
+             </item>
+             <item row="1" column="1">
+              <property name="text">
+               <string>2</string>
+              </property>
+             </item>
+             <item row="1" column="2">
+              <property name="text">
+               <string>1</string>
+              </property>
+             </item>
+             <item row="2" column="0">
+              <property name="text">
+               <string>9</string>
+              </property>
+             </item>
+             <item row="2" column="1">
+              <property name="text">
+               <string>3</string>
+              </property>
+             </item>
+             <item row="2" column="2">
+              <property name="text">
+               <string>1</string>
+              </property>
+             </item>
             </widget>
            </item>
            <item>
             <widget class="QTableWidget" name="conditionColumnWidget">
+             <property name="minimumSize">
+              <size>
+               <width>23</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>62</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="verticalScrollBarPolicy">
               <enum>Qt::ScrollBarAsNeeded</enum>
              </property>
@@ -125,7 +184,7 @@
               <enum>QAbstractItemView::NoSelection</enum>
              </property>
              <property name="rowCount">
-              <number>2</number>
+              <number>3</number>
              </property>
              <property name="columnCount">
               <number>1</number>
@@ -153,7 +212,23 @@
              </attribute>
              <row/>
              <row/>
+             <row/>
              <column/>
+             <item row="0" column="0">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </item>
+             <item row="1" column="0">
+              <property name="text">
+               <string>1</string>
+              </property>
+             </item>
+             <item row="2" column="0">
+              <property name="text">
+               <string>3</string>
+              </property>
+             </item>
             </widget>
            </item>
           </layout>
@@ -193,6 +268,19 @@
          </property>
          <property name="value">
           <number>2</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox">
+         <property name="text">
+          <string>Выполнить проверку наличия решений</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="tristate">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
