@@ -15,6 +15,8 @@ Gauss::Gauss(QWidget *parent)
       currRowIndex(0)
 {
     ui->setupUi(this);
+
+    ui->solutionLabel->hide();
 }
 
 Gauss::~Gauss()
@@ -188,13 +190,21 @@ void Gauss::reset()
 {
     matrix.clear();
 
+    rowCount = 0;
     currColumnIndex = -1;
+    currRowIndex = 0;
+
+    while(QLayoutItem* item = ui->solutionLayout->takeAt(0))
+    {
+        delete item->widget();
+        delete item;
+    }
 }
 
 void Gauss::printStep()
 {
     GaussStep* stepWidget = new GaussStep(matrix, message);
-    ui->srcLayout->addWidget(stepWidget);
+    ui->solutionLayout->addWidget(stepWidget);
 
     message.clear();
 }
@@ -212,7 +222,10 @@ void Gauss::on_matrixSizeSpin_valueChanged(int count)
 
 void Gauss::on_calculateButton_clicked()
 {
+    reset();
+
     matrix = addColumnToMatrix();
+    qDebug() << matrix;
     rowCount = matrix.size();
     currColumnIndex = getMainColumn();
 
@@ -223,9 +236,8 @@ void Gauss::on_calculateButton_clicked()
         return;
     }
 
+    ui->solutionLabel->setHidden(false);
+
     setMainRow();
-
     calculate();
-
-    reset();
 }

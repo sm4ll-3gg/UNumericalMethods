@@ -241,6 +241,30 @@
              </item>
             </layout>
            </item>
+           <item>
+            <widget class="QLabel" name="solutionLabel">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>13</pointsize>
+               <weight>75</weight>
+               <italic>true</italic>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Ход решения:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="solutionLayout"/>
+           </item>
           </layout>
          </item>
         </layout>
