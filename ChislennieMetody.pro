@@ -27,10 +27,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    gauss.cpp
+    Gauss/gauss.cpp \
+    Gauss/gaussstep.cpp \
+    teplo.cpp
 
 HEADERS  += mainwindow.h \
-    gauss.h
+    Gauss/gauss.h \
+    Gauss/gaussstep.h \
+    teplo.h
 
 FORMS    += mainwindow.ui \
-    gauss.ui
+    Gauss/gauss.ui \
+    Gauss/gaussstep.ui \
+    teplo.ui
+

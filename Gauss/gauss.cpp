@@ -1,9 +1,11 @@
 #include "gauss.h"
 #include "ui_gauss.h"
+#include "gaussstep.h"
 
 #include <math.h>
 #include <QVariant>
 #include <QDebug>
+#include <QLabel>
 
 Gauss::Gauss(QWidget *parent)
     :QWidget(parent),
@@ -115,26 +117,39 @@ void Gauss::divideCurrRowOnConst(const int k)
 
 void Gauss::subtractCurrRowFromRest()
 {
-    std::for_each(matrix.begin() + currRowIndex + 1, matrix.end(),
-                  [ this ](QVector<double>& curr)
+    for(int j = currRowIndex + 1; j < matrix.size(); ++j)
     {
+        QVector<double>& curr = matrix[j];
+
         int k = curr[currColumnIndex];
         for(int i = 0; i < curr.size(); ++i)
         {
             curr[i] -= matrix[currRowIndex][i] * k;
         }
-    });
 
+        message += "Вычтем из строки " + QString::number(j+1) + " строку " +
+                QString::number(currRowIndex+1) + ", умноженную на " +
+                QString::number(k) + ";\n";
+    }
 }
 
-void Gauss::makeUpperTriangularMatrix()
+void Gauss::calculate()
 {
-    for(int i = 0; i < matrix.size() - 1; ++i)
+    for(int i = 0; i < matrix.size(); ++i)
     {
         step();
 
         currColumnIndex++;
         currRowIndex++;
+
+        printStep();
+    }
+
+    for(int i = rowCount - 1; i > 0; --i)
+    {
+        subtractRowFromRest(i);
+
+        printStep();
     }
 }
 
@@ -143,25 +158,18 @@ void Gauss::subtractRowFromRest(int row)
     QVector<double> curr = matrix[row];
     int size = curr.size();
 
-    int koef = 0;
     for(int i = 0; i < row; ++i)
     {
         QVector<double>& target = matrix[i];
 
-        qDebug() << i << " " << row << " " << target[row] << " " << matrix[i][row];
-        koef = target[row];
-        qDebug() << koef;
+        double k = target[row];
 
-        target[ size - 1 ] -= curr[size - 1] * target[row];
-        target[row] -= curr[row] * target[row];
-    }
-}
+        target[ size - 1 ] -= curr[size - 1] * k;
+        target[row] -= curr[row] * k;
 
-void Gauss::makeEMatrixFromUT()
-{
-    for(int i = rowCount - 1; i > 0; --i)
-    {
-        subtractRowFromRest(i);
+        message += "Вычтем из строки " + QString::number(i+1) + " строку " +
+                QString::number(row+1) + ", умноженную на " +
+                QString::number(k) + ";\n";
     }
 }
 
@@ -170,8 +178,10 @@ void Gauss::step()
     int k = matrix[currRowIndex][currColumnIndex];
     divideCurrRowOnConst(k);
 
+    message += "Разделим строку " + QString::number(currRowIndex+1) +
+            " на " + QString::number(k) + ".\n";
+
     subtractCurrRowFromRest();
-    qDebug() << matrix;
 }
 
 void Gauss::reset()
@@ -181,13 +191,23 @@ void Gauss::reset()
     currColumnIndex = -1;
 }
 
+void Gauss::printStep()
+{
+    GaussStep* stepWidget = new GaussStep(matrix, message);
+    ui->srcLayout->addWidget(stepWidget);
+
+    message.clear();
+}
+
 
 void Gauss::on_matrixSizeSpin_valueChanged(int count)
 {
     ui->conditionTableWidget->setRowCount(count);
     ui->conditionTableWidget->setColumnCount(count);
+    ui->conditionTableWidget->setMinimumSize(count*61, count*61);
 
     ui->conditionColumnWidget->setRowCount(count);
+    ui->conditionColumnWidget->setMinimumHeight(count*61);
 }
 
 void Gauss::on_calculateButton_clicked()
@@ -198,16 +218,14 @@ void Gauss::on_calculateButton_clicked()
 
     if(currColumnIndex == - 1)
     {
-        ui->answerField->setText("Решений нет!");
+        QLabel* lbl = new QLabel("Решений нет!");
+        ui->srcLayout->addWidget(lbl);
         return;
     }
 
     setMainRow();
 
-    makeUpperTriangularMatrix();
-    makeEMatrixFromUT();
-
-    qDebug() << matrix;
+    calculate();
 
     reset();
 }

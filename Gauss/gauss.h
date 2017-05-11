@@ -35,13 +35,14 @@ private: // Methods
     void            setMainRow();
     void            divideCurrRowOnConst(const int k);
     void            subtractCurrRowFromRest();
-    void            makeUpperTriangularMatrix();
+    void            calculate();
 
     void            subtractRowFromRest(int row);
-    void            makeEMatrixFromUT();
     void            step();
 
     void            reset();
+
+    void            printStep();
 
 private:
     Ui::Gauss *ui;
@@ -52,6 +53,8 @@ private:
 
     int             currColumnIndex;
     int             currRowIndex;
+
+    QString         message;
 };
 
 #endif // GAUSS_H
