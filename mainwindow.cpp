@@ -14,13 +14,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     Gauss* gaussWidget = new Gauss;
-    ui->tabWidget->addTab(gaussWidget, "Первая");
+    ui->tabWidget->addTab(gaussWidget, "Метод Жордана-Гаусса");
 
     Teplo* teploWidget = new Teplo;
-    ui->tabWidget->addTab(teploWidget, "Вторая");
+    ui->tabWidget->addTab(teploWidget, "Уравнение теплопроводности");
 
     Voln* volnWidget = new Voln;
-    ui->tabWidget->addTab(volnWidget, "Третья");
+    ui->tabWidget->addTab(volnWidget, "Волновое уравнение");
+
+    ui->tabWidget->setCurrentIndex(1);
 }
 
 MainWindow::~MainWindow()

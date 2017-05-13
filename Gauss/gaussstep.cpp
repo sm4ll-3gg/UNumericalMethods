@@ -24,7 +24,7 @@ void GaussStep::setMatrix(const GaussStep::Matrix &matrix)
     ui->tableWidget->setRowCount(size);
     ui->tableWidget->setColumnCount(size);
 
-    ui->tableWidget->setMinimumSize( size*61, size*61 );
+    ui->tableWidget->setMinimumSize( size*60, size*60 );
 
     for(int i = 0; i < size; ++i)
     {

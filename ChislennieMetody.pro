@@ -8,7 +8,7 @@ CONFIG += c++14
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = ChislennieMetody
 TEMPLATE = app
@@ -29,15 +29,20 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     Gauss/gauss.cpp \
     Gauss/gaussstep.cpp \
-    teplo.cpp
+    Teplo/teplo.cpp \
+    Voln/voln.cpp \
+    qcustomplot.cpp
 
 HEADERS  += mainwindow.h \
     Gauss/gauss.h \
     Gauss/gaussstep.h \
-    teplo.h
+    Teplo/teplo.h \
+    Voln/voln.h \
+    qcustomplot.h
 
 FORMS    += mainwindow.ui \
     Gauss/gauss.ui \
     Gauss/gaussstep.ui \
-    teplo.ui
+    Teplo/teplo.ui \
+    Voln/voln.ui
 
