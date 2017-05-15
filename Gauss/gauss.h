@@ -12,22 +12,24 @@ class Gauss : public QWidget
 {
     Q_OBJECT
 
+    using Matrix = QVector<QVector<double>>;
+
 public:
     explicit Gauss(QWidget *parent = 0);
     ~Gauss();
 
+    QVector<double> calculate(Matrix&& matrix, QVector<double>&& column);
+
 private slots:
     void on_matrixSizeSpin_valueChanged(int count);
-
     void on_calculateButton_clicked();
 
 private: // Methods
-    typedef QVector<QVector<double>> Matrix;
-
     Matrix          getMatrix();
     QVector<double> getColumn();
 
     Matrix          addColumnToMatrix();
+    Matrix          addColumnToMatrix(Matrix&& matrix, QVector<double>&& column);
 
     int             getMainColumn();
     // Меняет местами первую строку, со строкой с
@@ -35,10 +37,12 @@ private: // Methods
     void            setMainRow();
     void            divideCurrRowOnConst(const int k);
     void            subtractCurrRowFromRest();
-    void            calculate();
+    void            calculateReuslt();
 
     void            subtractRowFromRest(int row);
     void            step();
+
+    QVector<double> getAnswer();
 
     void            reset();
 

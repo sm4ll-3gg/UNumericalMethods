@@ -31,18 +31,21 @@ SOURCES += main.cpp\
     Gauss/gaussstep.cpp \
     Teplo/teplo.cpp \
     Voln/voln.cpp \
-    qcustomplot.cpp
+    CustomPlot/qcustomplot.cpp \
+    CustomPlot/diagram.cpp
 
 HEADERS  += mainwindow.h \
     Gauss/gauss.h \
     Gauss/gaussstep.h \
     Teplo/teplo.h \
     Voln/voln.h \
-    qcustomplot.h
+    CustomPlot/qcustomplot.h \
+    CustomPlot/diagram.h
 
 FORMS    += mainwindow.ui \
     Gauss/gauss.ui \
     Gauss/gaussstep.ui \
     Teplo/teplo.ui \
-    Voln/voln.ui
+    Voln/voln.ui \
+    CustomPlot/diagram.ui
 

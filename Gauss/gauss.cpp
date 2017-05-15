@@ -24,6 +24,38 @@ Gauss::~Gauss()
     delete ui;
 }
 
+QVector<double> Gauss::calculate(Gauss::Matrix&& m, QVector<double>&& c)
+{
+    matrix = addColumnToMatrix(std::move(m), std::move(c));
+
+    reset();
+
+    matrix = addColumnToMatrix();
+    qDebug() << matrix;
+    rowCount = matrix.size();
+    currColumnIndex = getMainColumn();
+
+    if(currColumnIndex == - 1)
+        return QVector<double>();
+
+    ui->solutionLabel->setHidden(false);
+
+    setMainRow();
+
+    for(int i = 0; i < matrix.size(); ++i)
+    {
+        step();
+
+        currColumnIndex++;
+        currRowIndex++;
+    }
+
+    for(int i = rowCount - 1; i > 0; --i)
+        subtractRowFromRest(i);
+
+    return getAnswer();
+}
+
 QVector<QVector<double>> Gauss::getMatrix()
 {
     QTableWidget* m = ui->conditionTableWidget;
@@ -67,6 +99,19 @@ Gauss::Matrix Gauss::addColumnToMatrix()
 {
     Matrix m = getMatrix();
     QVector<double> c = getColumn();
+
+    for(int i = 0; i < m.size(); ++i)
+    {
+        m[i].push_back( c[i] );
+    }
+
+    return m;
+}
+
+Gauss::Matrix Gauss::addColumnToMatrix(Gauss::Matrix && matrix, QVector<double> &&column)
+{
+    Matrix m = matrix;
+    QVector<double> c = column;
 
     for(int i = 0; i < m.size(); ++i)
     {
@@ -135,7 +180,7 @@ void Gauss::subtractCurrRowFromRest()
     }
 }
 
-void Gauss::calculate()
+void Gauss::calculateReuslt()
 {
     for(int i = 0; i < matrix.size(); ++i)
     {
@@ -153,6 +198,17 @@ void Gauss::calculate()
 
         printStep();
     }
+
+    QVector<double> answer = getAnswer();
+
+    QString answerString("");
+    for(int i = 0; i < matrix.size(); ++i)
+    {
+        answerString += "x" + QString::number(i+1) + " = " +
+                QString::number(answer[i], 'f', 3) + "\t";
+    }
+    QLabel* answerLabel = new QLabel(answerString);
+    ui->solutionLayout->addWidget(answerLabel);
 }
 
 void Gauss::subtractRowFromRest(int row)
@@ -184,6 +240,15 @@ void Gauss::step()
             " на " + QString::number(k) + ".\n";
 
     subtractCurrRowFromRest();
+}
+
+QVector<double> Gauss::getAnswer()
+{
+    QVector<double> answer;
+    for(int i = 0; i < matrix.size(); ++i)
+        answer.push_back( matrix[i][rowCount] );
+
+    return answer;
 }
 
 void Gauss::reset()
@@ -239,5 +304,5 @@ void Gauss::on_calculateButton_clicked()
     ui->solutionLabel->setHidden(false);
 
     setMainRow();
-    calculate();
+    calculateReuslt();
 }

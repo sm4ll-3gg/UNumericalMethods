@@ -20,11 +20,10 @@ public:
     ~Teplo();
 
 private slots:
-    void on_calculateButton_clicked();
+    void    on_calculateButton_clicked();
 
-    void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
+    void    showPrevLayer();
+    void    showNextLayer();
 
 private: // Methods
     bool    isInputDataValid();
@@ -36,11 +35,14 @@ private:
     Ui::Teplo *ui;
 
     // Входные значения
+    double  a;
     double  l; // Длина струны
-    int     n; // Количество точек на отрезке
     double  tau; // Шаг по времени
+    int     n; // Количество точек на отрезке
 
-    double  h; // Шаг длине
+    double  h; // Шаг по длине
+
+    int     currLayer;
 
     // Матрица n*m, где n - кол-во слоев, а m - кол-во участков
     Matrix  matrix;

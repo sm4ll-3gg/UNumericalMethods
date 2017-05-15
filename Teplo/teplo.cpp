@@ -3,16 +3,24 @@
 
 #include <cmath>
 #include <QDebug>
+#include <QFontMetrics>
 
 Teplo::Teplo(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Teplo),
-    l(0),
-    n(0),
-    tau(0),
-    h(0)
+    a(0), l(0), tau(0), n(0), h(0),
+    currLayer(0)
+
 {
     ui->setupUi(this);
+
+    QTextBrowser* tb = ui->conditionText;
+    int height = QFontMetrics(tb->font()).boundingRect(QRect(), tb->alignment(),
+                                                       tb->toPlainText()).height();
+    tb->setFixedHeight(height+25);
+
+    connect(ui->graph, &Diagram::prevLayerRequest, this, &Teplo::showPrevLayer);
+    connect(ui->graph, &Diagram::nextLayerRequest, this, &Teplo::showNextLayer);
 }
 
 Teplo::~Teplo()
@@ -24,46 +32,51 @@ void Teplo::on_calculateButton_clicked()
 {
     if(!isInputDataValid()) return;
 
-    l = 3; //ui->l->text().toDouble();
-    n = ui->plotCount->text().toInt();
-    tau = ui->tau->text().toDouble();
+    matrix.clear();
+    currLayer = 0;
 
-    h = l/n;
+    a = ui->aEdit->text().toDouble();
+    l = ui->lEdit->text().toDouble();
+    tau = ui->tauEdit->text().toDouble();
+    n = ui->pointCount->text().toInt();
 
-    qDebug() << "l = " << l
-             << "; n = " << n
-             << "; tau = " << tau
-             << "; h = " << h << ";";
+    h = l/(n-1);
 
     calculateNullLayer();
-
-
+    ui->graph->showLayer(matrix[0], h, 0);
 }
 
 bool Teplo::isInputDataValid()
 {
     bool isValid = true;
 
-    //    if(ui->l->text().toDouble() < 3)
-    //    {
-    //        isValid = false;
-    //        ui->l->setText("");
-    //        ui->l->setPlaceholderText("Данные не корректны");
-    //    } else ui->l->setPlaceholderText("l");
-
-    if(ui->plotCount->text().toInt() < 3)
+    if(ui->aEdit->text() <= 0)
     {
         isValid = false;
-        ui->plotCount->setText("");
-        ui->plotCount->setPlaceholderText("Данные не корректны");
-    } else ui->plotCount->setPlaceholderText("n");
+        ui->aEdit->setText("");
+        ui->aEdit->setPlaceholderText("Данные не корректны");
+    } else ui->aEdit->setPlaceholderText("");
 
-    if(ui->tau->text().toDouble() <= 0)
+    if(ui->lEdit->text().toDouble() < 3)
     {
         isValid = false;
-        ui->tau->setText("");
-        ui->tau->setPlaceholderText("Данные не корректны");
-    } else ui->tau->setPlaceholderText("tau");
+        ui->lEdit->setText("");
+        ui->lEdit->setPlaceholderText("Данные не корректны");
+    } else ui->lEdit->setPlaceholderText("l");
+
+    if(ui->tauEdit->text().toDouble() <= 0)
+    {
+        isValid = false;
+        ui->tauEdit->setText("");
+        ui->tauEdit->setPlaceholderText("Данные не корректны");
+    } else ui->tauEdit->setPlaceholderText("tau");
+
+    if(ui->pointCount->text().toInt() < 3)
+    {
+        isValid = false;
+        ui->pointCount->setText("");
+        ui->pointCount->setPlaceholderText("Данные не корректны");
+    } else ui->pointCount->setPlaceholderText("n");
 
     return isValid;
 }
@@ -74,8 +87,8 @@ void Teplo::calculateNullLayer()
 
     for(int i = 0; i < n; ++i)
     {
-        float xi = h*i;
-        float d = 4 * sin(2*M_PI*xi) * pow(cos(M_PI*xi), 2);
+        double xi = h*i;
+        double d = 4 * sin(2*M_PI*xi) * pow(cos(M_PI*xi), 2);
         layer.push_back(d);
     }
 
@@ -85,36 +98,32 @@ void Teplo::calculateNullLayer()
 void Teplo::calculateNextLayer()
 {
     Layer next{0};
-    float lambda = sqrt(6) * tau / pow(h, 2);
+    double lambda = a * tau / pow(h, 2);
 
     for(int i = 1; i < n - 1; ++i)
     {
-        Layer uj = matrix.last();
+        Layer uj = *std::prev(matrix.end());
         next.push_back(lambda * uj[i + 1] + (1 - 2*lambda) * uj[i] + lambda * uj[i - 1]);
     }
     next.push_back(0);
 
     matrix.push_back(next);
-    //    std::generate_n(next.begin(), n, [this, lambda]()
-    //    {
-    //        return;
-    //    });
 }
 
-void Teplo::on_pushButton_clicked()
+void Teplo::showPrevLayer()
 {
-    calculateNextLayer();
+    if(currLayer == 0)
+        return;
+
+    currLayer--;
+
+    ui->graph->showLayer(matrix[currLayer], h, currLayer);
 }
 
-void Teplo::on_pushButton_2_clicked()
+void Teplo::showNextLayer()
 {
-    for(int j = 0; j < matrix.size(); ++j)
-    {
-        QString layer = "";
-        for(int i = 0; i < n; ++i)
-        {
-            layer += QString::number(matrix[j][i], 'f', 2) + "; ";
-        }
-        qDebug() << layer;
-    }
+    if(matrix.size() >= ++currLayer)
+        calculateNextLayer();
+
+    ui->graph->showLayer(matrix[currLayer], h,currLayer);
 }

@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Voln* volnWidget = new Voln;
     ui->tabWidget->addTab(volnWidget, "Волновое уравнение");
 
-    ui->tabWidget->setCurrentIndex(1);
+    ui->tabWidget->setCurrentIndex(2);
 }
 
 MainWindow::~MainWindow()
