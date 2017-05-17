@@ -114,7 +114,7 @@
                <column/>
                <item row="0" column="0">
                 <property name="text">
-                 <string>1</string>
+                 <string>2</string>
                 </property>
                </item>
                <item row="0" column="1">
@@ -124,37 +124,37 @@
                </item>
                <item row="0" column="2">
                 <property name="text">
-                 <string>1</string>
+                 <string>-1</string>
                 </property>
                </item>
                <item row="1" column="0">
                 <property name="text">
-                 <string>4</string>
+                 <string>-3</string>
                 </property>
                </item>
                <item row="1" column="1">
                 <property name="text">
-                 <string>2</string>
+                 <string>4</string>
                 </property>
                </item>
                <item row="1" column="2">
                 <property name="text">
-                 <string>1</string>
+                 <string>2</string>
                 </property>
                </item>
                <item row="2" column="0">
                 <property name="text">
-                 <string>9</string>
+                 <string>1</string>
                 </property>
                </item>
                <item row="2" column="1">
                 <property name="text">
-                 <string>3</string>
+                 <string>2</string>
                 </property>
                </item>
                <item row="2" column="2">
                 <property name="text">
-                 <string>1</string>
+                 <string>-4</string>
                 </property>
                </item>
               </widget>
@@ -224,17 +224,17 @@
                <column/>
                <item row="0" column="0">
                 <property name="text">
-                 <string>0</string>
+                 <string>-3</string>
                 </property>
                </item>
                <item row="1" column="0">
                 <property name="text">
-                 <string>1</string>
+                 <string>-6</string>
                 </property>
                </item>
                <item row="2" column="0">
                 <property name="text">
-                 <string>3</string>
+                 <string>-8</string>
                 </property>
                </item>
               </widget>

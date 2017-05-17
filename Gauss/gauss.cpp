@@ -24,38 +24,6 @@ Gauss::~Gauss()
     delete ui;
 }
 
-QVector<double> Gauss::calculate(Gauss::Matrix&& m, QVector<double>&& c)
-{
-    matrix = addColumnToMatrix(std::move(m), std::move(c));
-
-    reset();
-
-    matrix = addColumnToMatrix();
-    qDebug() << matrix;
-    rowCount = matrix.size();
-    currColumnIndex = getMainColumn();
-
-    if(currColumnIndex == - 1)
-        return QVector<double>();
-
-    ui->solutionLabel->setHidden(false);
-
-    setMainRow();
-
-    for(int i = 0; i < matrix.size(); ++i)
-    {
-        step();
-
-        currColumnIndex++;
-        currRowIndex++;
-    }
-
-    for(int i = rowCount - 1; i > 0; --i)
-        subtractRowFromRest(i);
-
-    return getAnswer();
-}
-
 QVector<QVector<double>> Gauss::getMatrix()
 {
     QTableWidget* m = ui->conditionTableWidget;
@@ -156,7 +124,7 @@ void Gauss::setMainRow()
     }
 }
 
-void Gauss::divideCurrRowOnConst(const int k)
+void Gauss::divideCurrRowOnConst(const double k)
 {
     std::for_each(matrix[currRowIndex].begin(), matrix[currRowIndex].end(),
                   [ k ](double& elm) { elm /= k; } );
@@ -168,7 +136,7 @@ void Gauss::subtractCurrRowFromRest()
     {
         QVector<double>& curr = matrix[j];
 
-        int k = curr[currColumnIndex];
+        double k = curr[currColumnIndex];
         for(int i = 0; i < curr.size(); ++i)
         {
             curr[i] -= matrix[currRowIndex][i] * k;
@@ -233,7 +201,7 @@ void Gauss::subtractRowFromRest(int row)
 
 void Gauss::step()
 {
-    int k = matrix[currRowIndex][currColumnIndex];
+    double k = matrix[currRowIndex][currColumnIndex];
     divideCurrRowOnConst(k);
 
     message += "Разделим строку " + QString::number(currRowIndex+1) +
@@ -246,7 +214,8 @@ QVector<double> Gauss::getAnswer()
 {
     QVector<double> answer;
     for(int i = 0; i < matrix.size(); ++i)
-        answer.push_back( matrix[i][rowCount] );
+        if(matrix[i][i] != 0)
+            answer.push_back( matrix[i][rowCount] );
 
     return answer;
 }

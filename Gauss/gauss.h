@@ -18,8 +18,6 @@ public:
     explicit Gauss(QWidget *parent = 0);
     ~Gauss();
 
-    QVector<double> calculate(Matrix&& matrix, QVector<double>&& column);
-
 private slots:
     void on_matrixSizeSpin_valueChanged(int count);
     void on_calculateButton_clicked();
@@ -35,7 +33,7 @@ private: // Methods
     // Меняет местами первую строку, со строкой с
     // ненулевым первым элементом
     void            setMainRow();
-    void            divideCurrRowOnConst(const int k);
+    void            divideCurrRowOnConst(const double k);
     void            subtractCurrRowFromRest();
     void            calculateReuslt();
 

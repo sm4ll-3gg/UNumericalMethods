@@ -88,7 +88,7 @@ void Teplo::calculateNullLayer()
     for(int i = 0; i < n; ++i)
     {
         double xi = h*i;
-        double d = 4 * sin(2*M_PI*xi) * pow(cos(M_PI*xi), 2);
+        double d = sin(xi);//4 * sin(2*M_PI*xi) * pow(cos(M_PI*xi), 2);
         layer.push_back(d);
     }
 
@@ -106,6 +106,12 @@ void Teplo::calculateNextLayer()
         next.push_back(lambda * uj[i + 1] + (1 - 2*lambda) * uj[i] + lambda * uj[i - 1]);
     }
     next.push_back(0);
+
+    {
+        qDebug() << "_________";
+        int i = 0;
+        std::for_each(next.begin(), next.end(), [this, &next, &i](double d){qDebug() << i++*h << ": " << d; });
+    }
 
     matrix.push_back(next);
 }

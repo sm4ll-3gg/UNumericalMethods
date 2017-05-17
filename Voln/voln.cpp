@@ -88,7 +88,13 @@ void Voln::calculateNullLayer()
 {
     Layer layer(n);
     // fi(x) = 0
-    std::generate(layer.begin(), layer.end(), [](){ return 0; });
+    //std::generate(layer.begin(), layer.end, [this, &i](){ return sin((i++)*h);} );
+    for(int i = 0; i < n; ++i)
+    {
+        layer[i] = sin(i*h);
+    }
+
+    //std::generate(layer.begin(), layer.end(), [](){ return 0; });
 
     matrix.push_back(layer);
 }
@@ -109,36 +115,20 @@ void Voln::calculateFirstLayer()
 
 void Voln::calculateNextLayer()
 {
-    Matrix m;
-    QVector<double> column(n);
-
     auto fst = *(matrix.end() - 1);
     auto null = *(matrix.end() - 2);
 
     double lambda = pow(c * tau / h, 2);
 
-    column.first() = 0;
-    column.last() = 0;
+    QVector<double> next(n);
+    next[0] = 0;
+    next[n - 1] = 0;
     for(int i = 1; i < n - 1; ++i)
     {
-        QVector<double> v(n);
-
-        v[i - 1] = lambda;
-        v[i] = -(1 + 2*lambda);
-        v[i + 1] = lambda;
-
-        m.push_back(v);
-
-        column[i] = (1 + 2*lambda) * null[i] - lambda *
-                    (null[i + 1] + null[i - 1]) - 2*fst[i];
+        next[i] = 2*(1 - lambda)*fst[i] + lambda*(fst[i+1] + fst[i-1]) - null[i];
     }
 
-    Gauss gauss;
-    Layer answer = gauss.calculate(std::move(m), std::move(column));
-
-    std::for_each(answer.begin(), answer.end(), [](double d){qDebug() << d;});
-
-    matrix.push_back(answer);
+    matrix.push_back(next);
 }
 
 void Voln::showPrevLayer()
